@@ -45,37 +45,137 @@
       </script>
 
       <script id="templates/tab-trend.html" type="text/ng-template">
-        <ion-view title="bokhylla">
-          <ion-content class="padding">
-            <h1>Top ranking for this week</h1>
+        <ion-view title="The most popular books this year" >  
+
+          <ion-content ng-controller="TrendCtrl">
+             <ion-refresher>
+                  pulling-text="Pull to refresh..."
+                  on-refresh="doRefresh()">
+            </ion-refresher>
+            <ion-list>
+              <ion-item ng-repeat="book in books" ng-click="showActionSheet()">
+                  
+                  {{book.name}}
+              </ion-item>
+            </ion-list>
+            
           </ion-content>
         </ion-view>
       </script>  
 
       <script id="templates/tab-mybooks.html" type="text/ng-template">
-        <ion-view title="My Books">
-          <ion-content class="padding">
-            <h1>The lord of the ring</h1>
-                  <a class="button" href="#/tab/onlineBook">start to read</a>
+        <ion-view title="My Books" ng-controller="MyBooksCtrl" >
+
+          <ion-content class="padding" >
+            <ion-list show-reorder="showReorder" show-delete="showDelete">
+              <ion-item ng-repeat="mybook in mybooks" >
+                  <ion-like-button class="ion-ios-heart"></ion-like-button>
+                  {{mybook.name}}
+                  <ion-reorder-button class="ion-navicon" on-reorder="moveBook(mybook, $fromIndex, $toIndex)"></ion-reorder-button>
+                  <ion-delete-button class="ion-minus-circled" ng-click="deleteBook(mybook)"></ion-delete-button>
+                  <ion-option-button class="button-assertive" ng-click="onBookDelete(mybook)">
+                    Delete
+                  </ion-option-button>
+                  <ion-option-button class="button-balanced" ng-click="share(mybook)">
+                    Share
+                  </ion-option-button>
+                   <ion-option-button class="button-positive" ng-click="edit(mybook)">
+                    Edit
+                  </ion-option-button>
+
+              </ion-item>
+            </ion-list>
           </ion-content>
+
+          <ion-footer-bar align-title="center" class="bar-energized">
+            <div class="buttons">
+              <button class="button button-icon icon ion-ios-minus-outline" ng-click="showDelete = !showDelete"></button>
+            </div>
+        
+            <h1 class="title">Edit my books gallery</h1>
+
+            <div class="buttons">
+              <button class="button" ng-click="showReorder = !showReorder" >Reorder</button>
+            </div>
+          </ion-footer-bar>
         </ion-view>
       </script>  
-
-      <script id="templates/tab-setting.html" type="text/ng-template">
-        <ion-view title="Setting">
-          <ion-content class="padding">
-            <h1>Setting</h1>
-          </ion-content>
-        </ion-view>
-      </script>
 
       <script id="templates/tab-online-book.html" type="text/ng-template">
         <ion-view title="Online book">
           <ion-content class="padding">
-            <h1>book content</h1>
+            <p>Long long time ago...</p>
           </ion-content>
         </ion-view>
       </script>
+
+      <script id="templates/tab-setting.html" type="text/ng-template">
+        <ion-view title="Setting">
+          <ion-content class="padding">
+            <button class="button button-block button-balanced" ng-click="openModal()">change to a new user name</button>
+
+            <div class="list card">
+              <a href="#" class="item item-icon-left">
+                <i class="icon ion-home"></i>
+                Homepage
+              </a>
+
+              <a href="#" class="item item-icon-left">
+                <i class="icon ion-ios-telephone"></i>
+                Edit phone number
+              </a>
+
+              <a href="#" class="item item-icon-left">
+                <i class="icon ion-wifi"></i>
+                Connect to Wifi
+              </a>
+
+              <a href="#" class="item item-icon-left">
+                <i class="icon ion-card"></i>
+                Edit my payment
+              </a>
+
+                <li class="item item-toggle">
+                  public
+                  <label class="toggle toggle-assertive">
+                    <input type="checkbox">
+                    <div class="track">
+                      <div class="handle"></div>
+                    </div>
+                  </label>
+                </li>
+
+                  <label class="item item-input item-select">
+                    <div class="input-label">
+                      My favorite author is:
+                    </div>
+                    <select>
+                      <option>Mark Twain</option>
+                      <option selected>William Shakespeare</option>
+                      <option>J.K.Rowling</option>
+                    </select>
+                  </label>
+            </div>
+          </ion-content>
+        </ion-view>
+      </script>
+
+      <script id="my-modal.html" type="text/ng-template">
+        <ion-modal-view>
+          <ion-header-bar>
+            <div class="buttons">
+              <h1 class="title">New User Name</h1>
+                 <button class="button button-icon ion-ios-close-empty" ng-click="closeModal()"></button>
+            </div>
+          </ion-header-bar>
+          <ion-content>
+             <lable>
+               New User Name: <input type="text" name="newName">
+             </lable>
+          </ion-content>
+        </ion-modal-view>
+      </script>
+     
    
   </body>
 </html>

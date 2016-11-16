@@ -28,21 +28,142 @@ angular.module('app', ['ionic'])
   });
 })
 
-.controller('TrendCtrl', function($scope) {
+.controller('TrendCtrl', function($scope, $ionicActionSheet) {
+$scope.books = [
+  { name : "Blood Song" },
+  { name : "Semper Mine" },
+  { name : "Walflower Girl" },
+  { name : "His Innocent Designer" },
+  { name : "Blood Song" },
+  { name : "Semper Mine" },
+  { name : "Walflower Girl" },
+  { name : "His Innocent Designer" },
+  { name : "Blood Song" },
+  { name : "Semper Mine" },
+  { name : "Walflower Girl" },
+  { name : "His Innocent Designer" },
+  { name : "Blood Song" },
+  { name : "Semper Mine" },
+  { name : "Walflower Girl" },
+  { name : "His Innocent Designer" },
+  { name : "Blood Song" },
+  { name : "Semper Mine" },
+  { name : "Walflower Girl" },
+  { name : "His Innocent Designer" },
+  { name : "Blood Song" },
+  { name : "Semper Mine" },
+  { name : "Walflower Girl" },
+  { name : "His Innocent Designer" },
+  { name : "Blood Song" },
+  { name : "Semper Mine" },
+  { name : "Walflower Girl" },
+  { name : "His Innocent Designer" },
+  { name : "Blood Song" },
+  { name : "Semper Mine" },
+  { name : "Walflower Girl" },
+  { name : "His Innocent Designer" },
+  { name : "Indebted" }
+];
+ $scope.doRefresh = function() {
+  alert("Refreshing");
+  $scope.$broadcast('scroll.refreshComplete');  
+ };
+ $scope.showActionSheet = function() {
+  // Show the action sheet:
+  $ionicActionSheet.show({
+    buttons: [{
+      text: '<b>Share</b> to Facebook'
+    }, {
+      text: '<b>Add</b> to my books gallery'
+    }],
+   
+    cancelText: 'Cancel',
+    titleText: 'Like this book?',
+    
+    cancel: function() {
+      alert("Clicked Cancel");
+    },
+   
+    buttonClicked: function(index, buttonObj) {
+      switch (index) {
+        case 0:
+          alert("Clicked Share");
+          return false;
+        case 1:
+          alert("Clicked Add");
+          return false;
+      }
+    }
+  });
+ };
 
-})  
+}) 
 
 .controller('MyBooksCtrl', function($scope) {
+$scope.mybooks = [
+  { name : "The Hobbit" },
+  { name : "Robinson Crusoe" },
+  { name : "A Taste of Blackberries" },
+  { name : "Nightmare Abbey" },
+  { name : "The Cat in the Hat" },
+  { name : "A Wizard of Earthsea" },
+  { name : "Pilgrim's Progress" },
+  { name : "Robinson Crusoe" },
+  { name : "A Taste of Blackberries" },
+  { name : "Nightmare Abbey" },
+  { name : "The Cat in the Hat" },
+  { name : "A Wizard of Earthsea" },
+  { name : "Pilgrim's Progress" },
+  { name : "Robinson Crusoe" },
+  { name : "A Taste of Blackberries" },
+  { name : "Nightmare Abbey" },
+  { name : "The Cat in the Hat" },
+  { name : "A Wizard of Earthsea" },
+  { name : "The Little Prince" }
+];
 
+ $scope.data = {
+    showDelete: false
+  };
+  $scope.edit = function(mybook) {
+    alert('Edit book: ' + mybook.name);
+  };
+  $scope.share = function(mybook) {
+    alert('Share book: ' + mybook.name);
+  }; 
+  $scope.onBookDelete = function(mybook) {
+    $scope.mybooks.splice($scope.mybooks.indexOf(mybook), 1);
+  };
+  $scope.moveBook = function(mybook, fromIndex, toIndex) {
+    $scope.mybooks.splice(fromIndex, 1);
+    $scope.mybooks.splice(toIndex, 0, mybook);
+ };
+  $scope.deleteBook = function (mybook) {
+    $scope.mybooks.splice($scope.mybooks.indexOf(mybook), 1);
+ };
 })  
 
-.controller('SettingCtrl', function($scope) {
+.controller('SettingCtrl', function($scope, $ionicModal) {
+ $ionicModal.fromTemplateUrl('my-modal.html', {
+   scope: $scope,
+   animation: 'slide-in-up'
+ }).then(function(modal) {
+   $scope.modal = modal;
+ });
+
+   $scope.openModal = function() {
+    $scope.modal.show();
+  };
+
+  $scope.closeModal = function() {
+   $scope.modal.hide();
+  };
 
 })
 
 .controller('OnlineBookCtrl', function($scope) {
 
-})  
+}) 
 
 .config(function($stateProvider, $urlRouterProvider) {
 $stateProvider
@@ -75,21 +196,21 @@ $stateProvider
      }
    })
    
-  .state('tab.onlineBook', {
-  url: '/onlineBook',
-  views: {
-    'tab-onlinebook': {
-      templateUrl: 'templates/tab-online-book.html',
-      controller: 'OnlineBookCtrl'
+.state('tab.onlineBook', {
+    url: '/onlineBook',
+    views: {
+      'tab-online-book': {
+        templateUrl: 'templates/tab-online-book.html',
+        controller: 'OnlineBookCtrl'
+      }
     }
-  }
-})
+  })
 
  .state('tab.setting', {
    url: '/setting',
    views: {
      'tab-setting': {
-       templateUrl: 'templates/setting.html',
+       templateUrl: 'templates/tab-setting.html',
        controller: 'SettingCtrl'
      }
    }
